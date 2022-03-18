@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1015844523521",
+    "project_id": "balance-54e38",
+    "storage_bucket": "balance-54e38.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015844523521:android:272ef08cdea3725e493a00",
+        "android_client_info": {
+          "package_name": "com.aritra.balance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015844523521-fc6lljose25l2pefeueeln61spsf1a0c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjhUiyg0XKgel4OEcrN7tjwbMTVuDXwlI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015844523521-fc6lljose25l2pefeueeln61spsf1a0c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
