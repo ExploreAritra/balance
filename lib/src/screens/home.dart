@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:balance/src/models/balance_model.dart';
 import 'package:balance/src/services/database_service.dart';
 import 'package:balance/src/widgets/blue_box.dart';
@@ -10,19 +12,28 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   TextEditingController leftTextController = TextEditingController();
   TextEditingController rightTextController = TextEditingController();
 
   late AnimationController _rotateController;
+  late AnimationController _slideController;
   bool isResetting = false;
+  double verticalShift = 0.0;
 
   @override
   void initState() {
     DatabaseService.updateBalance(BalanceModel(leftCounter: 0, rightCounter: 0));
     _rotateController = AnimationController(
       lowerBound: -1.0,
+      upperBound: 1.0,
+      value: 0.0,
+      vsync: this,
+    );
+
+    _slideController = AnimationController(
+      lowerBound: 0.0,
       upperBound: 1.0,
       value: 0.0,
       vsync: this,
@@ -43,18 +54,26 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     });
 
     // Rotating box based on data received back from firebase database
-    DatabaseService.getBalance().listen((event) {
-      _rotateController.animateTo((event.rightCounter - event.leftCounter) * 0.001, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    DatabaseService.getBalanceData().listen((event) {
+      verticalShift += 0.0009 * ((event.rightCounter - event.leftCounter).abs() > 0 ? (event.rightCounter - event.leftCounter).abs() : 1) + ((event.rightCounter + event.leftCounter) * 0.001);
+      if(event.rightCounter == 0 && event.leftCounter == 0){
+        verticalShift = 0;
+      }
+      _rotateController.animateTo((event.rightCounter - event.leftCounter).sign * pow((event.rightCounter - event.leftCounter).abs(), 1.4) * 0.001, duration: const Duration(milliseconds: 200), curve: Curves.easeInOut);
+      _slideController.animateTo(verticalShift, duration: const Duration(milliseconds: 100), curve: Curves.linear);
     });
 
     _rotateController.addListener(() async {
       setState(() {});
-      if(_rotateController.value.abs() >= 0.125){
+      if(_rotateController.value.abs() > 0.125 || _slideController.value == 1.0){
         isResetting = true;
-        _rotateController.animateBack(0, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut).whenComplete(() {
-          isResetting = false;
-          rightTextController.clear();
-          leftTextController.clear();
+        verticalShift = 0;
+        _rotateController.animateBack(0, duration: const Duration(milliseconds: 200), curve: Curves.easeInOut).whenComplete(() {
+          _slideController.animateBack(0, duration: const Duration(milliseconds: 200), curve: Curves.easeInOut).whenComplete(() {
+            rightTextController.clear();
+            leftTextController.clear();
+            isResetting = false;
+          });
         });
         DatabaseService.updateBalance(BalanceModel(leftCounter: 0, rightCounter: 0));
       }
@@ -80,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: Column(
           children: [
             SizedBox(
-              height: size.height*0.3,
+              height: size.height*0.2,
               child: Row(
                 children: [
                   Expanded(child: textContainer(leftTextController)),
@@ -88,21 +107,21 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 ],
               ),
             ),
-            const SizedBox(
-              height: 50,
-            ),
             Padding(
               padding: const EdgeInsets.all(25),
-              child: (rightTextController.text.length - leftTextController.text.length) < 0 ? RotationTransition(
-                turns: Tween(begin: -1.0, end: 1.0).animate(_rotateController),
-                alignment: Alignment.centerRight,
-                child: const BlueBox(),
-              ) : RotationTransition(
-                turns: Tween(begin: -1.0, end: 1.0).animate(_rotateController),
-                alignment: Alignment.centerLeft,
-                child: const BlueBox(),
+              child: SlideTransition(
+                position: Tween<Offset>(begin: Offset.zero, end: const Offset(0.0, 4.0)).animate(CurvedAnimation(
+                  parent: _slideController,
+                  curve: Curves.linear,
+                )),
+                child: RotationTransition(
+                  turns: Tween(begin: -1.0, end: 1.0).animate(_rotateController),
+                  alignment: (rightTextController.text.length - leftTextController.text.length) < 0 ? Alignment.centerRight : Alignment.centerLeft,
+                  child: const BlueBox(),
+                ),
               ),
             ),
+            const SizedBox(height: 300,),
           ],
         ),
       ),

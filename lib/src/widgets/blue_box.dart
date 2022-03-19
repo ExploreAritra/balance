@@ -10,7 +10,7 @@ class BlueBox extends StatelessWidget {
     return Container(
       color: Colors.blue,
       child: StreamBuilder<BalanceModel>(
-        stream: DatabaseService.getBalance(),
+        stream: DatabaseService.getBalanceData(),
         initialData: BalanceModel(leftCounter: 0, rightCounter: 0),
         builder: (context, snapshot) {
           return Row(

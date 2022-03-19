@@ -13,7 +13,7 @@ class DatabaseService {
     });
   }
 
-  static Stream<BalanceModel> getBalance() {
+  static Stream<BalanceModel> getBalanceData() {
     Stream<DatabaseEvent> balanceData = ref.onValue;
     return balanceData.map((event) {
       String json = jsonEncode(event.snapshot.value);
