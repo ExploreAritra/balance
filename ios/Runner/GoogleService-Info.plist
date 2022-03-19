@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1015844523521-utpbqljo809ao8cq563ujfegutois9mg.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1015844523521-utpbqljo809ao8cq563ujfegutois9mg</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCNqTPo2FAw2jrPub98IWKmWPmhvDGpYDk</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1015844523521</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.aritra.balance</string>
+	<key>PROJECT_ID</key>
+	<string>balance-54e38</string>
+	<key>STORAGE_BUCKET</key>
+	<string>balance-54e38.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1015844523521:ios:4d60fca4523dccf6493a00</string>
+	<key>DATABASE_URL</key>
+	<string>https://balance-54e38-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

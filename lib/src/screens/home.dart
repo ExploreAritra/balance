@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    // Resetting the count in database to o
     DatabaseService.updateBalance(BalanceModel(leftCounter: 0, rightCounter: 0));
     // Animation controller for box rotation
     _rotateController = AnimationController(
